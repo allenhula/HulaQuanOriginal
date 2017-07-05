@@ -15,6 +15,7 @@ namespace HulaQuanOriginal.Models
         public string PortraitUrl { get; set; }
 
         public virtual ICollection<Pet> Pets { get; set; }
+        public virtual ICollection<Publish> Publishs { get; set; }
     }
 
     public enum PetType

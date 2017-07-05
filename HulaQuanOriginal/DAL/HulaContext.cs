@@ -13,7 +13,7 @@ namespace HulaQuanOriginal.DAL
         public HulaContext() : base("HulaContext")
         { }
 
-        public DbSet<HulaStatus> HulaStatuss { get; set; }
+        public DbSet<Publish> Publishs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Pet> Pets { get; set; }
 

@@ -13,5 +13,10 @@ namespace HulaQuanOriginal.Controllers
         {
             return View();
         }
+
+        public ActionResult Get(int id)
+        {
+            return View();
+        }
     }
 }

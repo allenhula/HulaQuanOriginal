@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HulaFriendController.cs" />
     <Compile Include="Controllers\HulaMeController.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\HulaMe.cs" />
     <Compile Include="Models\HulaStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -177,11 +179,12 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\HulaFriend\Index.cshtml" />
+    <Content Include="Views\HulaStatus\Index.cshtml" />
+    <Content Include="Views\HulaMe\Get.cshtml" />
+    <Content Include="Views\HulaMe\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\HulaMe\" />
-    <Folder Include="Views\HulaStatus\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
