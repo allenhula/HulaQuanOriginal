@@ -11,6 +11,7 @@ namespace HulaQuanOriginal.Models
         public int UserId { get; set; }
         public string Content { get; set; }
         public string ImageUrls { get; set; }
+        public DateTime PublishDate { get; set; }
 
         public virtual User User { get; set; }
     }
