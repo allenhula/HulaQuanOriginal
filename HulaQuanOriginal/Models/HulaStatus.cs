@@ -15,4 +15,12 @@ namespace HulaQuanOriginal.Models
 
         public virtual User User { get; set; }
     }
+
+    public class FriendPublish
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int PublishId { get; set; }
+        public DateTime PublishDate { get; set; }
+    }
 }

@@ -1,0 +1,14 @@
+﻿<h2>Publish status</h2>
+
+<form>
+
+</form>
+
+@Html.BeginForm("NewPublish","HulaStatus",FormMethod.Post, new { enctype="multipart/form-data"})
+{
+    <div>
+        <span>Content</span>
+        <input type="file" name="images" multiple="multiple"/>
+        <input type="submit" value="Publish" />
+    </div>
+}

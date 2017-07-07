@@ -15,4 +15,5 @@ namespace HulaQuanOriginal.ViewModels
         public string Content { get; set; }
         public string ImageUris { get; set; }
     }
+    
 }

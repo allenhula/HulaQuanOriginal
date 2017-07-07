@@ -18,6 +18,22 @@ namespace HulaQuanOriginal.Models
         public virtual ICollection<Publish> Publishs { get; set; }
     }
 
+    public class Relationship
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int FriendId { get; set; }
+    }
+
+    public class FriendRequest
+    {
+        public int Id { get; set; }
+        public int FromUserId { get; set; }
+        public int ToUserId { get; set; }
+        public bool Confirmed { get; set; }
+        public DateTime CreatedTime { get; set; }
+    }
+
     public enum PetType
     {
         Dog

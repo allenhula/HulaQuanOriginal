@@ -16,6 +16,9 @@ namespace HulaQuanOriginal.DAL
         public DbSet<Publish> Publishs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Pet> Pets { get; set; }
+        public DbSet<FriendPublish> FriendPublishs { get; set; }
+        public DbSet<FriendRequest> FriendRequests { get; set; }
+        public DbSet<Relationship> Relationships { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

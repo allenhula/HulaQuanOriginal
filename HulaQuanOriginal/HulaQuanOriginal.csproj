@@ -182,6 +182,7 @@
     <Content Include="Views\HulaStatus\Index.cshtml" />
     <Content Include="Views\HulaMe\Get.cshtml" />
     <Content Include="Views\HulaMe\Index.cshtml" />
+    <Content Include="Views\HulaStatus\NewPublish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
