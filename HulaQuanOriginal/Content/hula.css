@@ -1,0 +1,123 @@
+﻿ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: list-item;
+}
+
+li, dd {
+    list-style: none;
+}
+
+div {
+    display: block;
+}
+
+a img {
+    display: block;
+}
+
+img {
+    vertical-align: top;
+    border: none;
+}
+
+.publish_wrap {
+    width: 690px;
+    padding-top: 30px;
+    margin: 0 auto;
+}
+
+    .publish_wrap .publish_single {
+        width: 690px;
+        padding-bottom: 30px;
+        overflow: hidden;
+    }
+
+.publish_single .userimg {
+    width: 60px;
+    float: left;
+    margin-right: 28px;
+}
+
+    .publish_single .userimg img {
+        border-radius: 30px;
+    }
+
+    .publish_single .userimg span {
+        width: 60px;
+        display: inline-block;
+        text-align: center;
+        padding-top: 5px;
+        font-size: 12px;
+    }
+
+.publish_single ul {
+    width: 600px;
+    float: right;
+}
+
+.publish_single li.publish_content {
+    padding: 12px 10px 10px 5px;
+    position: relative;
+    font-size: 14px;
+    line-height: 22px;
+    font-family: Microsoft YaHei,Hiragino Sans GB;
+}
+
+.publish_single .publish_other {
+    overflow: hidden;
+    padding-left: 5px;
+    position: relative;
+}
+
+.publish_single .publish_delete {
+    margin-left: 16px;
+}
+
+.publish_single .publish_time {
+    color: #999;
+    padding-right: 10px;
+}
+
+.publish_single li.publish_content span.heightbox {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.publish_single li.publish_content p.publishtoggle {
+    font-size: 12px;
+    display: none;
+}
+
+.publish_single .publish_piclist {
+    position: relative;
+    padding-bottom: 15px;
+    padding-left: 5px;
+}
+
+    .publish_single .publish_piclist a {
+        float: left;
+        width: 90px;
+        height: 90px;
+        overflow: hidden;
+        margin-right: 10px;
+        margin-top: 10px;
+    }
+
+.cf {
+    zoom: 1;
+}
+
+    .cf:after {
+        content: ".";
+        display: block;
+        clear: both;
+        font-size: 0;
+        height: 0;
+        line-height: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }

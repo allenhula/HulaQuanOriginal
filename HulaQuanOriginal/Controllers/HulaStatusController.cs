@@ -12,38 +12,39 @@ namespace HulaQuanOriginal.Controllers
     {
         private HulaContext hulaContext = new HulaContext();
         // GET: HulaStatus
-        public ActionResult Index()
+        public ActionResult GetFriendPublishs()
         {
-            var portraitUri = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg";
-            var imageUris = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png";
-            var demoList = new List<HulaStatusViewModel>()
-            {
-                new HulaStatusViewModel() { Id=1, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
-                new HulaStatusViewModel() { Id=2, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
-                new HulaStatusViewModel() { Id=3, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow}
-            };
+            //var portraitUri = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg";
+            //var imageUris = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png";
+            //var demoList = new List<HulaStatusViewModel>()
+            //{
+            //    new HulaStatusViewModel() { Id=1, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
+            //    new HulaStatusViewModel() { Id=2, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
+            //    new HulaStatusViewModel() { Id=3, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow}
+            //};
 
             // TODO: Add time filter
-            //var currentUserId = 1;
-            //var currentUser = hulaContext.Users.Find(currentUserId);
-            //var friendPublishs = hulaContext.FriendPublishs.Where(fp => fp.UserId == currentUserId).ToList(); 
+            var currentUserId = 1;
+            var currentUser = hulaContext.Users.Find(currentUserId);
+            var friendPublishs = hulaContext.FriendPublishs.Where(fp => fp.UserId == currentUserId).ToList();
 
-            //var hulaStatusVMs = friendPublishs.Select(fp =>
-            //{
-            //    var publish = hulaContext.Publishs.Find(fp.PublishId);
-            //    return new HulaStatusViewModel()
-            //    {
-            //        Id = publish.Id,
-            //        PublisherId = currentUserId,
-            //        PublisherName = currentUser.Name,
-            //        PublishDate = publish.PublishDate,
-            //        PublisherPortraitUri = currentUser.PortraitUrl,
-            //        Content = publish.Content,
-            //        ImageUris = publish.ImageUrls
-            //    };
-            //}).ToList();
+            var hulaStatusVMs = friendPublishs.Select(fp =>
+            {
+                var publish = hulaContext.Publishs.Find(fp.PublishId);
+                var publisher = publish.User;
+                return new HulaStatusViewModel()
+                {
+                    Id = publish.Id,
+                    PublisherId = publish.UserId,
+                    PublisherName = publisher.Name,
+                    PublishDate = publish.PublishDate,
+                    PublisherPortraitUri = publisher.PortraitUrl,
+                    Content = publish.Content,
+                    ImageUris = publish.ImageUrls
+                };
+            }).ToList();
 
-            return View(demoList);
+            return View(hulaStatusVMs);
         }
 
         public ActionResult NewPublish()
@@ -61,7 +62,7 @@ namespace HulaQuanOriginal.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult GetMyPublishes()
+        public ActionResult GetMyPublishs()
         {
             //var currentUserId = 1;
             //var currentUser = hulaContext.Users.Find(currentUserId);

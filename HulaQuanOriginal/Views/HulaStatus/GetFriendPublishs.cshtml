@@ -1,0 +1,53 @@
+﻿@model IEnumerable<HulaQuanOriginal.ViewModels.HulaStatusViewModel>
+@using HulaQuanOriginal.Helpers
+
+<div class="jumbotron">
+    <h1>Status Update</h1>
+</div>
+<p>
+    @Html.ActionLink("Publish New", "Publish")
+</p>
+
+<div class="publish_wrap">
+    @foreach (var item in Model)
+    {
+        <div itemtype="http://schema.org/Review" itemscope="" itemprop="review" class="publish_single">
+            <div class="userimg">
+                <a href="@Url.Action("Get", "HulaMe", new { id = @item.PublisherId })" target="_blank">
+                    <img src="@item.PublisherPortraitUri" height="60" width="60" />
+                </a>
+                <span class="ellipsis">
+                    <a itemprop="author" href="@Url.Action("Get", "HulaMe", new { id = @item.PublisherId })" title="@item.PublisherName" target="_blank">
+                        @item.PublisherName
+                    </a>
+                </span>
+            </div>
+            <ul>
+                <li itemprop="description" class="publish_content cf">
+                    <span class="heightbox">
+                        @item.Content
+                    </span>
+                    <p class="publishtoggle">
+                        <a href="javascript:;">More...</a>
+                    </p>
+                </li>
+                <li class="publish_piclist cf">
+                    @foreach (var imageUri in item.ImageUris.Split(Constants.ImageStringSpliter))
+                    {
+                        <a href="@imageUri" target="_blank">
+                            <img src="@imageUri.AppendSuffix(Constants.ImageThumpnailSuffix)" />
+                        </a>
+                    }
+                </li>
+                <li class="publish_other">
+                    <span class="publish_time">
+                        <em itemprop="datePublished">@item.PublishDate</em>
+                    </span>
+                    <span class="publish_delete">
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </span>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
