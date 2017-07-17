@@ -1,8 +1,10 @@
 ﻿using HulaQuanOriginal.DAL;
+using HulaQuanOriginal.Models;
 using HulaQuanOriginal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,18 +13,10 @@ namespace HulaQuanOriginal.Controllers
     public class HulaStatusController : Controller
     {
         private HulaContext hulaContext = new HulaContext();
+
         // GET: HulaStatus
         public ActionResult GetFriendPublishs()
         {
-            //var portraitUri = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg";
-            //var imageUris = "https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png";
-            //var demoList = new List<HulaStatusViewModel>()
-            //{
-            //    new HulaStatusViewModel() { Id=1, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
-            //    new HulaStatusViewModel() { Id=2, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow},
-            //    new HulaStatusViewModel() { Id=3, PublisherId=1, PublisherName="allen", PublisherPortraitUri=portraitUri, Content="hello hula", ImageUris=imageUris, PublishDate=DateTime.UtcNow}
-            //};
-
             // TODO: Add time filter
             var currentUserId = 1;
             var currentUser = hulaContext.Users.Find(currentUserId);
@@ -53,12 +47,27 @@ namespace HulaQuanOriginal.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewPublish(HttpPostedFileBase[] images, string content)
+        public ActionResult NewPublish(IEnumerable<HttpPostedFileBase> images, string content)
         {
+            StringBuilder sb = new StringBuilder();
             foreach (var image in images)
             {
+                if (image != null)
+                {
 
+                }
             }
+
+            var publish = new Publish()
+            {
+                UserId = 1,
+                Content = content,
+                ImageUrls = sb.ToString(),
+                PublishDate = DateTime.UtcNow
+            };
+            hulaContext.Publishs.Add(publish);
+            hulaContext.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

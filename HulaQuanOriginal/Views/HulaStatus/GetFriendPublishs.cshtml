@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<HulaQuanOriginal.ViewModels.HulaStatusViewModel>
 @using HulaQuanOriginal.Helpers
 
+@{
+    ViewBag.Title = "Hula Status";
+}
+
 <div class="jumbotron">
     <h1>Status Update</h1>
 </div>
 <p>
-    @Html.ActionLink("Publish New", "Publish")
+    @Html.ActionLink("Publish New", "NewPublish")
 </p>
 
 <div class="publish_wrap">
@@ -40,12 +44,15 @@
                     }
                 </li>
                 <li class="publish_other">
-                    <span class="publish_time">
+                    <span class="publish_right">
+                        @Html.ActionLink("Like", "Like", new { id = item.Id })
+                    </span>
+                    <span class="publish_right">
+                        @Html.ActionLink("Comment", "Comment", new { id = item.Id })
+                    </span>
+                    <span class="publish_left">
                         <em itemprop="datePublished">@item.PublishDate</em>
-                    </span>
-                    <span class="publish_delete">
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </span>
+                    </span>                    
                 </li>
             </ul>
         </div>

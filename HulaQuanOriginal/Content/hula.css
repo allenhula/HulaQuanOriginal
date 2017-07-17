@@ -73,13 +73,15 @@ img {
     position: relative;
 }
 
-.publish_single .publish_delete {
+.publish_single .publish_right {
+    float:right;
     margin-left: 16px;
 }
 
-.publish_single .publish_time {
+.publish_single .publish_left {
     color: #999;
-    padding-right: 10px;
+    right: 10px;
+    float:left;
 }
 
 .publish_single li.publish_content span.heightbox {

@@ -1,14 +1,27 @@
 ﻿<h2>Publish status</h2>
 
-<form>
+@{
+    ViewBag.Title = "New Status";
+}
 
-</form>
-
-@Html.BeginForm("NewPublish","HulaStatus",FormMethod.Post, new { enctype="multipart/form-data"})
+@using (Html.BeginForm("NewPublish", "HulaStatus", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div>
-        <span>Content</span>
-        <input type="file" name="images" multiple="multiple"/>
-        <input type="submit" value="Publish" />
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="text" name="content" placeholder="Input your words here..." />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="file" name="images" multiple="multiple" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Publish" class="btn btn-primary" />
+            </div>
+        </div>
     </div>
 }
