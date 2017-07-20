@@ -1,1 +1,34 @@
-﻿
+﻿@{
+    ViewBag.Title = "My Friends";
+}
+
+<div class="jumbotron">
+    <h1>My Friends</h1>
+</div>
+<p>
+    @Html.ActionLink("My Friends", "Get") || @Html.ActionLink("Requests", "GetRequests")
+</p>
+
+@using (Html.BeginForm("Add", "HulaFriend", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="text" name="search" placeholder="Input user id to search..." />
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <span>@ViewBag.SearchResult</span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

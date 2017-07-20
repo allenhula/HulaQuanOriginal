@@ -45,26 +45,50 @@ namespace HulaQuanOriginal.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(int friendId)
+        public ActionResult Add(string search)
         {
-            return RedirectToAction("Get");
+            var currentUserId = 1;
+            int idToSearch;
+            if (int.TryParse(search, out idToSearch))
+            {
+                var user = hulaDb.Users.Find(idToSearch);
+                if (user != null)
+                {
+                    hulaDb.FriendRequests.Add(new FriendRequest()
+                    {
+                        FromUserId = currentUserId,
+                        ToUserId = idToSearch,
+                        Confirmed = false,
+                        CreatedTime = DateTime.UtcNow
+                    });
+                    hulaDb.SaveChanges();
+                    return RedirectToAction("Get");
+                }
+            }
+
+            ViewBag.SearchResult = "No such user exists!";
+            return View();
         }
 
         public ActionResult Confirm(int id)
         {
+            var request = hulaDb.FriendRequests.Find(id);
+            if (request == null)
+            {
+                return HttpNotFound();
+            }
             using (var dbTransaction = hulaDb.Database.BeginTransaction())
             {
                 try
                 {
-                    var request = hulaDb.FriendRequests.Find(id);
+                    // confirm                    
                     request.Confirmed = true;
-
+                    // add friend relationship 
                     hulaDb.Relationships.Add(new Relationship()
                     {
                         UserId = request.FromUserId,
                         FriendId = request.ToUserId
                     });
-
                     hulaDb.Relationships.Add(new Relationship()
                     {
                         UserId = request.ToUserId,
