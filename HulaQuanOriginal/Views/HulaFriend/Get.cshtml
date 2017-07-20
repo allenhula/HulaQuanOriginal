@@ -1,0 +1,34 @@
+﻿@model IEnumerable<HulaQuanOriginal.Models.User>
+
+@{
+    ViewBag.Title = "My Friends";
+}
+
+<div class="jumbotron">
+    <h1>My Friends</h1>
+</div>
+<p>
+    @Html.ActionLink("Add Friend", "Add") || @Html.ActionLink("Requests", "GetRequests")
+</p>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(mi => item.Name)
+            </td>
+            <td>
+                <a href="@item.PortraitUrl" target="_blank">
+                    <img width="90" height="90" src="@item.PortraitUrl" />
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(mi => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>

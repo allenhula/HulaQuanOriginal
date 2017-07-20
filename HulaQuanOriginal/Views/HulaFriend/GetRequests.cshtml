@@ -1,0 +1,38 @@
+﻿@model IEnumerable<HulaQuanOriginal.ViewModels.FriendRequestViewModel>
+
+@{
+    ViewBag.Title = "Friend Requests";
+}
+
+<div class="jumbotron">
+    <h1>Friend Requests</h1>
+</div>
+<p>
+    @Html.ActionLink("Add Friend", "Add") || @Html.ActionLink("Friend Requests", "GetRequests")
+</p>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(mi => item.FromUserName)
+            </td>
+            <td>
+                <a href="@item.FromUserPictureUri" target="_blank">
+                    <img width="90" height="90" src="@item.FromUserPictureUri" />
+                </a>
+            </td>
+            <td>
+                if (@item.Confirmed)
+                {
+                    Added
+                }
+                else
+                {
+                    @Html.ActionLink("Confirm", "Confirm", new { id = item.Id })
+                }
+            </td>
+        </tr>
+    }
+</table>

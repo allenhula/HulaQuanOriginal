@@ -20,8 +20,7 @@ namespace HulaQuanOriginal.Helpers
 
         public static string GetRandomString(DateTime date)
         {
-            var prefix = $"{date.Year}{date.Month.ToString("d2")}{date.Day.ToString("d2")}";
-            return $"{prefix}{GetRandomString()}";
+            return $"{date.ToString("yyyyMMdd")}{GetRandomString()}";
         }
     }
 }

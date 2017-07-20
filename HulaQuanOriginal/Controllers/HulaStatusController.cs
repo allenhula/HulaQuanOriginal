@@ -67,6 +67,11 @@ namespace HulaQuanOriginal.Controllers
                     var imageSrvSavePath = Path.Combine(Server.MapPath(imagePath));
                     image.SaveAs(imageSrvSavePath);
 
+                    // combine image urls into one string to save in db
+                    var imageUrl = $"{Request.Url.GetLeftPart(UriPartial.Authority)}{VirtualPathUtility.ToAbsolute(imagePath)}";
+                    sb.Append(imageUrl);
+                    sb.Append(Constants.ImageStringSpliter);
+
                     // save the image thumpnail with 90*90 size
                     var imageThumpnailFileName = $"{namePrefix}{Constants.Image90X90Suffix}{imageExtension}";
                     var imageThumpnailPath = $"~/PublishImages/{imageThumpnailFileName}";
@@ -75,12 +80,7 @@ namespace HulaQuanOriginal.Controllers
                         Image.FromStream(image.InputStream),
                         Constants.Image90X90Width,
                         Constants.Image90X90Height,
-                        imageThumpnailSrvSavePath);
-
-                    // combine image urls into one string to save in db
-                    var imageUrl = $"{Request.Url.GetLeftPart(UriPartial.Authority)}{VirtualPathUtility.ToAbsolute(imagePath)}";
-                    sb.Append(imageUrl);
-                    sb.Append(Constants.ImageStringSpliter);
+                        imageThumpnailSrvSavePath);                    
                 }
             }
 
