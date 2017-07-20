@@ -2,14 +2,14 @@
 @using HulaQuanOriginal.Helpers
 
 @{
-    ViewBag.Title = "Hula Status";
+    ViewBag.Title = "Friends Status";
 }
 
 <div class="jumbotron">
-    <h1>Status Update</h1>
+    <h1>Friends Status</h1>
 </div>
 <p>
-    @Html.ActionLink("Publish New", "NewPublish")
+    @Html.ActionLink("New Status", "NewPublish") || @Html.ActionLink("My Status", "GetMyPublishs")
 </p>
 
 <div class="publish_wrap">
@@ -39,16 +39,16 @@
                     @foreach (var imageUri in item.ImageUris.Split(Constants.ImageStringSpliter))
                     {
                         <a href="@imageUri" target="_blank">
-                            <img src="@imageUri.AppendSuffix(Constants.ImageThumpnailSuffix)" />
+                            <img src="@imageUri.AppendSuffix(Constants.Image90X90Suffix)" />
                         </a>
                     }
                 </li>
                 <li class="publish_other">
                     <span class="publish_right">
-                        @Html.ActionLink("Like", "Like", new { id = item.Id })
+                        Like @*@Html.ActionLink("Like", "Like", new { id = item.Id })*@
                     </span>
                     <span class="publish_right">
-                        @Html.ActionLink("Comment", "Comment", new { id = item.Id })
+                        Comment @*@Html.ActionLink("Comment", "Comment", new { id = item.Id })*@
                     </span>
                     <span class="publish_left">
                         <em itemprop="datePublished">@item.PublishDate</em>

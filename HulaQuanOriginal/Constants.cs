@@ -9,5 +9,9 @@ namespace HulaQuanOriginal
     {
         public const char ImageStringSpliter = ';';
         public const string ImageThumpnailSuffix = "-Thumpnail";
+
+        public const string Image90X90Suffix = "-90X90";
+        public const int Image90X90Width = 90;
+        public const int Image90X90Height = 90;
     }
 }

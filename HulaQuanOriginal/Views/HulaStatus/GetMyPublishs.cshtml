@@ -1,0 +1,32 @@
+﻿@model IEnumerable<HulaQuanOriginal.Models.Publish>
+@using HulaQuanOriginal.Helpers
+
+@{
+    ViewBag.Title = "My Status";
+}
+
+<div class="jumbotron">
+    <h1>My Status</h1>
+</div>
+<p>
+    @Html.ActionLink("New Status", "NewPublish") || @Html.ActionLink("Friends Status", "GetFriendPublishs")
+</p>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.PublishDate.Day.ToString("d2") @item.PublishDate.ToString("MMM")
+            </td>
+            <td>
+                <a href="@item.ImageUrls.Split(Constants.ImageStringSpliter)[0]" target="_blank">
+                    <img src="@item.ImageUrls.Split(Constants.ImageStringSpliter)[0].AppendSuffix(Constants.Image90X90Suffix)" />
+                </a>
+            </td>
+            <td>
+                @item.Content
+            </td>
+        </tr>
+    }
+</table>

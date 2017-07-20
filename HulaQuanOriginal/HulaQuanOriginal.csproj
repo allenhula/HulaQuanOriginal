@@ -138,7 +138,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Models\HulaMe.cs" />
     <Compile Include="Models\HulaStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -185,9 +187,11 @@
     <Content Include="Views\HulaMe\Get.cshtml" />
     <Content Include="Views\HulaMe\Index.cshtml" />
     <Content Include="Views\HulaStatus\NewPublish.cshtml" />
+    <Content Include="Views\HulaStatus\GetMyPublishs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="PublishImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

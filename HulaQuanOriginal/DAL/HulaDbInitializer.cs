@@ -13,32 +13,32 @@ namespace HulaQuanOriginal.DAL
             var users = new List<User>
             {
                 new User { Name="allenl", Email="lyp311307@163.com", PhoneNumber="12345607890", PortraitUrl="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg" },
-                new User { Name="cindyl", Email="lqx311307@126.com", PhoneNumber="12345617891", PortraitUrl="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg" }
+                new User { Name="cindyl", Email="lqx311307@126.com", PhoneNumber="12345617891", PortraitUrl="https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png" }
             };
 
             users.ForEach(u => context.Users.Add(u));
-            context.SaveChanges();
+            context.SaveChanges(); 
 
             var publishs = new List<Publish>
             {
                 new Publish { UserId = 1,
                     Content ="Haha you are the best as always, Haha you are the best as always, Haha you are the best as always!",
-                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png",
+                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/husky001.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/husky002.jpg",
                     PublishDate = DateTime.Parse("7/10/2017 8:32:20")
                 },
                 new Publish { UserId = 2,
                     Content ="Haha you are the best as always, Haha you are the best as always, Haha you are the best as always!",
-                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png",
+                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/husky003.jpg",
                     PublishDate = DateTime.Parse("7/10/2017 16:22:10")
                 },
                 new Publish { UserId = 1,
                     Content ="Haha you are the best as always, Haha you are the best as always, Haha you are the best as always!",
-                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png",
+                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/husky003.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/husky002.jpg",
                     PublishDate = DateTime.Parse("7/11/2017 8:12:00")
                 },
                 new Publish { UserId = 2,
                     Content ="Haha you are the best as always, Haha you are the best as always, Haha you are the best as always!",
-                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/me3.jpg;https://allenlsharest.blob.core.chinacloudapi.cn/share/rabbit.png",
+                    ImageUrls ="https://allenlsharest.blob.core.chinacloudapi.cn/share/husky001.jpg",
                     PublishDate = DateTime.Parse("7/11/2017 10:46:25")
                 },
             };
