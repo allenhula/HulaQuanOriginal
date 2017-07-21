@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "My Friends";
+    ViewBag.Title = "Add Friends";
 }
 
 <div class="jumbotron">
-    <h1>My Friends</h1>
+    <h1>@ViewBag.Title</h1>
 </div>
 <p>
     @Html.ActionLink("My Friends", "Get") || @Html.ActionLink("Requests", "GetRequests")
@@ -15,12 +15,12 @@
         <hr />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="text" name="search" placeholder="Input user id to search..." />
+                <input type="text" name="search" placeholder="Input user id to add..." />
             </div>
         </div>
         <br />
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-10 text-danger">
                 <span>@ViewBag.SearchResult</span>
             </div>
         </div>

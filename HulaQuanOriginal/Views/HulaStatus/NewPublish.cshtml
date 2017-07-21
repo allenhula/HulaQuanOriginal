@@ -4,6 +4,10 @@
     ViewBag.Title = "New Status";
 }
 
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+</div>
+
 @using (Html.BeginForm("NewPublish", "HulaStatus", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-horizontal">

@@ -139,12 +139,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Models\HulaMe.cs" />
     <Compile Include="Models\HulaStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\FriendRequestViewModel.cs" />
+    <Compile Include="ViewModels\HulaMeViewModels.cs" />
     <Compile Include="ViewModels\HulaStatusViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,11 +188,13 @@
     <Content Include="Views\HulaFriend\Get.cshtml" />
     <Content Include="Views\HulaStatus\GetFriendPublishs.cshtml" />
     <Content Include="Views\HulaMe\Get.cshtml" />
-    <Content Include="Views\HulaMe\Index.cshtml" />
+    <Content Include="Views\HulaMe\Register.cshtml" />
     <Content Include="Views\HulaStatus\NewPublish.cshtml" />
     <Content Include="Views\HulaStatus\GetMyPublishs.cshtml" />
     <Content Include="Views\HulaFriend\Add.cshtml" />
     <Content Include="Views\HulaFriend\GetRequests.cshtml" />
+    <Content Include="Views\HulaMe\Login.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

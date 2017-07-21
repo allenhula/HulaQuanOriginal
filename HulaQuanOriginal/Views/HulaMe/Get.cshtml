@@ -1,1 +1,67 @@
-﻿<h1>My information</h1>
+﻿@model HulaQuanOriginal.ViewModels.UserDetailsViewModel
+
+@{
+    ViewBag.Title = "My Information";
+}
+
+<div class="jumbotron">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(m => m.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(m => m.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(m => m.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(m => m.Pets)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Picture</th>
+                    <th>Birthday</th>
+                    @*<th></th>*@
+                </tr>
+                @foreach (var pet in Model.Pets)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(p => pet.Name)
+                        </td>
+                        <td>
+                            <a href="@pet.PictureUrl" target="_blank">
+                                <img width="90" height="90" src="@pet.PictureUrl" />
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(p => pet.BirthDate)
+                        </td>
+                        @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { id = pet. }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.CourseID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CourseID })
+                        </td>*@
+                    </tr>
+                }
+
+            </table>
+        </dd>
+    </dl>
+</div>

@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace HulaQuanOriginal.Controllers
 {
+    [Authorize]
     public class HulaStatusController : Controller
     {
         private HulaContext hulaContext = new HulaContext();

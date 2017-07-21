@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace HulaQuanOriginal.Controllers
 {
+    [Authorize]
     public class HulaFriendController : Controller
     {
         private HulaContext hulaDb = new HulaContext();
@@ -64,9 +65,15 @@ namespace HulaQuanOriginal.Controllers
                     hulaDb.SaveChanges();
                     return RedirectToAction("Get");
                 }
+                else
+                {
+                    ViewBag.SearchResult = "No such user exists!";
+                }
             }
-
-            ViewBag.SearchResult = "No such user exists!";
+            else
+            {
+                ViewBag.SearchResult = "Only allow for numberic id search!";
+            }
             return View();
         }
 
@@ -83,18 +90,21 @@ namespace HulaQuanOriginal.Controllers
                 {
                     // confirm                    
                     request.Confirmed = true;
+                    hulaDb.SaveChanges();
+
                     // add friend relationship 
                     hulaDb.Relationships.Add(new Relationship()
                     {
                         UserId = request.FromUserId,
                         FriendId = request.ToUserId
                     });
+                    hulaDb.SaveChanges();
+
                     hulaDb.Relationships.Add(new Relationship()
                     {
                         UserId = request.ToUserId,
                         FriendId = request.FromUserId
                     });
-
                     hulaDb.SaveChanges();
 
                     dbTransaction.Commit();
