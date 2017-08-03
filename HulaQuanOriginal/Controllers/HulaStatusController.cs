@@ -16,33 +16,34 @@ namespace HulaQuanOriginal.Controllers
     [Authorize]
     public class HulaStatusController : Controller
     {
-        private HulaContext hulaContext = new HulaContext();
-
         // GET: HulaStatus
         public ActionResult GetFriendPublishs()
         {
             // TODO: Add time filter
-            var currentUserId = 1;
-            var currentUser = hulaContext.Users.Find(currentUserId);
-            var friendPublishs = hulaContext.FriendPublishs.Where(fp => fp.UserId == currentUserId).ToList();
-
-            var hulaStatusVMs = friendPublishs.Select(fp =>
+            var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
+            using (var hulaDb = new HulaContext())
             {
-                var publish = hulaContext.Publishs.Find(fp.PublishId);
-                var publisher = publish.User;
-                return new HulaStatusViewModel()
-                {
-                    Id = publish.Id,
-                    PublisherId = publish.UserId,
-                    PublisherName = publisher.Name,
-                    PublishDate = publish.PublishDate,
-                    PublisherPortraitUri = publisher.PortraitUrl,
-                    Content = publish.Content,
-                    ImageUris = publish.ImageUrls
-                };
-            }).OrderByDescending(fp => fp.PublishDate).ToList();
+                var currentUser = hulaDb.Users.Find(currentUserId);
+                var friendPublishs = hulaDb.FriendPublishs.Where(fp => fp.UserId == currentUserId).ToList();
 
-            return View(hulaStatusVMs);
+                var hulaStatusVMs = friendPublishs.Select(fp =>
+                {
+                    var publish = hulaDb.Publishs.Find(fp.PublishId);
+                    var publisher = publish.User;
+                    return new HulaStatusViewModel()
+                    {
+                        Id = publish.Id,
+                        PublisherId = publish.UserId,
+                        PublisherName = publisher.Name,
+                        PublishDate = publish.PublishDate,
+                        PublisherPortraitUri = publisher.PortraitUrl,
+                        Content = publish.Content,
+                        ImageUris = publish.ImageUrls
+                    };
+                }).OrderByDescending(fp => fp.PublishDate).ToList();
+
+                return View(hulaStatusVMs);
+            }
         }
 
         public ActionResult NewPublish()
@@ -53,7 +54,7 @@ namespace HulaQuanOriginal.Controllers
         [HttpPost]
         public ActionResult NewPublish(IEnumerable<HttpPostedFileBase> images, string content)
         {
-            var currentUserId = 2;
+            var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
             StringBuilder sb = new StringBuilder();
             foreach (var image in images)
             {
@@ -93,44 +94,41 @@ namespace HulaQuanOriginal.Controllers
                 ImageUrls = sb.ToString().TrimEnd(Constants.ImageStringSpliter),
                 PublishDate = DateTime.UtcNow
             };
-            var publishInDb = hulaContext.Publishs.Add(publish);
-            hulaContext.SaveChanges();
 
-            // add reference of this publish to all friends
-            var friendIds = hulaContext.Relationships.Where(r => r.UserId == currentUserId).Select(r => r.FriendId).ToList();
-            foreach (var friendId in friendIds)
+            using (var hulaDb = new HulaContext())
             {
-                hulaContext.FriendPublishs.Add(
-                new FriendPublish()
-                {
-                    UserId = friendId,
-                    PublishId = publishInDb.Id,
-                    PublishDate = publishInDb.PublishDate
-                });
-            }
-            hulaContext.SaveChanges();
+                var publishInDb = hulaDb.Publishs.Add(publish);
+                hulaDb.SaveChanges();
 
-            return RedirectToAction("GetFriendPublishs");
+                // add reference of this publish to all friends
+                var friendIds = hulaDb.Relationships.Where(r => r.UserId == currentUserId).Select(r => r.FriendId).ToList();
+                foreach (var friendId in friendIds)
+                {
+                    hulaDb.FriendPublishs.Add(
+                    new FriendPublish()
+                    {
+                        UserId = friendId,
+                        PublishId = publishInDb.Id,
+                        PublishDate = publishInDb.PublishDate
+                    });
+                }
+                hulaDb.SaveChanges();
+
+                return RedirectToAction("GetFriendPublishs");
+            }
         }
 
         public ActionResult GetMyPublishs()
         {
-            var currentUserId = 1;
-            var currentUser = hulaContext.Users.Find(currentUserId);
-            var myPublishs = currentUser.Publishs.OrderByDescending(p => p.PublishDate).ToList();
+            var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
 
-            //var hulaStatusVMs = myPublishs.Select(p => new HulaStatusViewModel()
-            //{
-            //    Id = p.Id,
-            //    PublisherId = currentUserId,
-            //    PublisherName = currentUser.Name,
-            //    PublishDate = p.PublishDate,
-            //    PublisherPortraitUri = currentUser.PortraitUrl,
-            //    Content = p.Content,
-            //    ImageUris = p.ImageUrls
-            //}).ToList<HulaStatusViewModel>();
+            using (var hulaDb = new HulaContext())
+            {
+                var currentUser = hulaDb.Users.Find(currentUserId);
+                var myPublishs = currentUser.Publishs.OrderByDescending(p => p.PublishDate).ToList();
 
-            return View(myPublishs);
+                return View(myPublishs);
+            }
         }
     }
 }

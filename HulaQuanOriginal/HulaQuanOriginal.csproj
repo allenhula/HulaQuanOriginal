@@ -135,6 +135,7 @@
     <Compile Include="Controllers\HulaStatusController.cs" />
     <Compile Include="DAL\HulaContext.cs" />
     <Compile Include="DAL\HulaDbInitializer.cs" />
+    <Compile Include="DAL\IHulaMeRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

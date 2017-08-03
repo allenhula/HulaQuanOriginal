@@ -24,9 +24,9 @@
                 </a>
             </td>
             <td>
-                if (@item.Confirmed)
+                @if (item.Confirmed)
                 {
-                    Added
+                    @Html.DisplayText("Added")
                 }
                 else
                 {

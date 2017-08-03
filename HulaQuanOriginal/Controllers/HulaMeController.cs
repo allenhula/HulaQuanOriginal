@@ -15,8 +15,6 @@ namespace HulaQuanOriginal.Controllers
     [Authorize]
     public class HulaMeController : Controller
     {
-        private HulaContext hulaDb = new HulaContext();
-
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -30,26 +28,30 @@ namespace HulaQuanOriginal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existedUser = hulaDb.Users.FirstOrDefault(u =>
+                using (var hulaDb = new HulaContext())
+                {
+                    var existedUser = hulaDb.Users.FirstOrDefault(u =>
                         u.Name.Equals(model.UserName, StringComparison.InvariantCultureIgnoreCase) ||
                         u.Email.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
-                if (existedUser == null)
-                {
-                    var key = StringHelper.GetRandomString(10);
-                    var pwdInHash = PasswordHelper.EncodePassword(model.Password, key);
-                    var user = new User
+
+                    if (existedUser == null)
                     {
-                        Name = model.UserName,
-                        Email = model.Email,
-                        Password = pwdInHash,
-                        Key = key
-                    };
+                        var key = StringHelper.GetRandomString(10);
+                        var pwdInHash = PasswordHelper.EncodePassword(model.Password, key);
+                        var user = new User
+                        {
+                            Name = model.UserName,
+                            Email = model.Email,
+                            Password = pwdInHash,
+                            Key = key
+                        };
 
-                    hulaDb.Users.Add(user);
-                    hulaDb.SaveChanges();
+                        hulaDb.Users.Add(user);
+                        hulaDb.SaveChanges();
 
-                    return RedirectToAction("Login");
-                }
+                        return RedirectToAction("Login");
+                    }
+                }                
                 ModelState.AddModelError("", "User already exists!");
             }
 
@@ -71,15 +73,19 @@ namespace HulaQuanOriginal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existedUser = hulaDb.Users.SingleOrDefault(u => 
+                User existedUser;
+                using (var hulaDb = new HulaContext())
+                {
+                    existedUser = hulaDb.Users.SingleOrDefault(u =>
                         u.Email.Equals(model.Email, StringComparison.InvariantCultureIgnoreCase));
+                }                
 
                 if (existedUser != null)
                 {
                     var pwdInHash = PasswordHelper.EncodePassword(model.Password, existedUser.Key);
                     if (pwdInHash == existedUser.Password)
                     {
-                        FormsAuthentication.SetAuthCookie(existedUser.Email, false);
+                        FormsAuthentication.SetAuthCookie($"{existedUser.Email},{existedUser.Id}", false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -97,9 +103,32 @@ namespace HulaQuanOriginal.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Get(int id)
+        public ActionResult Get()
         {
-            return View();
+            var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
+            using (var hulaDb = new HulaContext())
+            {
+                var user = hulaDb.Users.Find(currentUserId);
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "HulaMe");
+                }
+                var petVMs = user.Pets.Select(p => new PetViewModel()
+                {
+                    Name = p.Name,
+                    BirthDate = p.BirthDate,
+                    PictureUrl = p.PictureUrl
+                }).ToList();
+
+                var userVM = new UserDetailsViewModel()
+                {
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    UserName = user.Name,
+                    Pets = petVMs
+                };
+                return View(userVM);
+            }
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

@@ -12,32 +12,37 @@ namespace HulaQuanOriginal.Controllers
     [Authorize]
     public class HulaFriendController : Controller
     {
-        private HulaContext hulaDb = new HulaContext();
-
         // GET: HulaFriend
         public ActionResult Get()
         {
-            var currentUserId = 1;
-            var friendIds = hulaDb.Relationships.Where(r => r.UserId == currentUserId).Select(r => r.FriendId).ToList();
-            var friends = friendIds.Select(fid => hulaDb.Users.Find(fid)).ToList();
-            return View(friends);
+            using (var hulaDb = new HulaContext())
+            {
+                var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
+                var friendIds = hulaDb.Relationships.Where(r => r.UserId == currentUserId).Select(r => r.FriendId).ToList();
+                var friends = friendIds.Select(fid => hulaDb.Users.Find(fid)).ToList();
+                return View(friends);
+            }            
         }
 
         public ActionResult GetRequests()
         {
-            var currentUserId = 1;
-            var requests = hulaDb.FriendRequests.Where(fr => fr.ToUserId == currentUserId).ToList();
-            var requestVMs = requests.Select(r => {
-                var fromUser = hulaDb.Users.Find(r.FromUserId);
-                return new FriendRequestViewModel()
+            using (var hulaDb = new HulaContext())
+            {
+                var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
+                var requests = hulaDb.FriendRequests.Where(fr => fr.ToUserId == currentUserId).ToList();
+                var requestVMs = requests.Select(r =>
                 {
-                    Id = r.Id,
-                    FromUserName = fromUser.Name,
-                    FromUserPictureUri = fromUser.PortraitUrl,
-                    Confirmed = r.Confirmed
-                };
-                });
-            return View(requestVMs);
+                    var fromUser = hulaDb.Users.Find(r.FromUserId);
+                    return new FriendRequestViewModel()
+                    {
+                        Id = r.Id,
+                        FromUserName = fromUser.Name,
+                        FromUserPictureUri = fromUser.PortraitUrl,
+                        Confirmed = r.Confirmed
+                    };
+                }).ToList();
+                return View(requestVMs);
+            }
         }
 
         public ActionResult Add()
@@ -48,26 +53,30 @@ namespace HulaQuanOriginal.Controllers
         [HttpPost]
         public ActionResult Add(string search)
         {
-            var currentUserId = 1;
+            var currentUserId = int.Parse(User.Identity.Name.Split(',')[1]);
             int idToSearch;
             if (int.TryParse(search, out idToSearch))
             {
-                var user = hulaDb.Users.Find(idToSearch);
-                if (user != null)
+                using (var hulaDb = new HulaContext())
                 {
-                    hulaDb.FriendRequests.Add(new FriendRequest()
+                    var user = hulaDb.Users.Find(idToSearch);
+                    if (user != null)
                     {
-                        FromUserId = currentUserId,
-                        ToUserId = idToSearch,
-                        Confirmed = false,
-                        CreatedTime = DateTime.UtcNow
-                    });
-                    hulaDb.SaveChanges();
-                    return RedirectToAction("Get");
-                }
-                else
-                {
-                    ViewBag.SearchResult = "No such user exists!";
+                        hulaDb.FriendRequests.Add(new FriendRequest()
+                        {
+                            FromUserId = currentUserId,
+                            ToUserId = idToSearch,
+                            Confirmed = false,
+                            CreatedTime = DateTime.UtcNow
+                        });
+                        hulaDb.SaveChanges();
+
+                        return RedirectToAction("Get");
+                    }
+                    else
+                    {
+                        ViewBag.SearchResult = "No such user exists!";
+                    }
                 }
             }
             else
@@ -79,39 +88,69 @@ namespace HulaQuanOriginal.Controllers
 
         public ActionResult Confirm(int id)
         {
-            var request = hulaDb.FriendRequests.Find(id);
-            if (request == null)
+            using (var hulaDb = new HulaContext())
             {
-                return HttpNotFound();
-            }
-            using (var dbTransaction = hulaDb.Database.BeginTransaction())
-            {
-                try
+                var request = hulaDb.FriendRequests.Find(id);
+                if (request == null)
                 {
-                    // confirm                    
-                    request.Confirmed = true;
-                    hulaDb.SaveChanges();
-
-                    // add friend relationship 
-                    hulaDb.Relationships.Add(new Relationship()
-                    {
-                        UserId = request.FromUserId,
-                        FriendId = request.ToUserId
-                    });
-                    hulaDb.SaveChanges();
-
-                    hulaDb.Relationships.Add(new Relationship()
-                    {
-                        UserId = request.ToUserId,
-                        FriendId = request.FromUserId
-                    });
-                    hulaDb.SaveChanges();
-
-                    dbTransaction.Commit();
+                    return HttpNotFound();
                 }
-                catch (Exception)
+                using (var dbTransaction = hulaDb.Database.BeginTransaction())
                 {
-                    dbTransaction.Rollback();
+                    try
+                    {
+                        // confirm                    
+                        request.Confirmed = true;
+                        hulaDb.SaveChanges();
+
+                        // add friend relationship 
+                        hulaDb.Relationships.Add(new Relationship()
+                        {
+                            UserId = request.FromUserId,
+                            FriendId = request.ToUserId
+                        });
+                        hulaDb.SaveChanges();
+
+                        hulaDb.Relationships.Add(new Relationship()
+                        {
+                            UserId = request.ToUserId,
+                            FriendId = request.FromUserId
+                        });
+                        hulaDb.SaveChanges();
+
+                        var fromUser = hulaDb.Users.Find(request.FromUserId);
+                        var toUser = hulaDb.Users.Find(request.ToUserId);
+
+                        // need to read the friends status history
+                        var friendsPublish4ToUser = fromUser.Publishs
+                            .OrderByDescending(p => p.PublishDate)
+                            .Take(10)
+                            .Select(p => new FriendPublish()
+                        {
+                            UserId = toUser.Id,
+                            PublishId = p.Id,
+                            PublishDate = p.PublishDate
+                        }).ToList();
+                        hulaDb.FriendPublishs.AddRange(friendsPublish4ToUser);
+
+                        var friendsPublish4FromUser = toUser.Publishs
+                            .OrderByDescending(p => p.PublishDate)
+                            .Take(10)
+                            .Select(p => new FriendPublish()
+                        {
+                            UserId = fromUser.Id,
+                            PublishId = p.Id,
+                            PublishDate = p.PublishDate
+                        }).ToList();
+                        hulaDb.FriendPublishs.AddRange(friendsPublish4FromUser);
+                        hulaDb.SaveChanges();
+
+                        dbTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbTransaction.Rollback();
+                    }
                 }
             }
             
